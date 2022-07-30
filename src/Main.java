@@ -5,11 +5,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) { //ЭТО ВЕТКА SALE
         Product[] products = {
-                new Product("Сметана", 80),
-                new Product("Сыр", 180),
-                new Product("Курица", 250),
-                new Product("Кофе", 320),
-                new Product("Хлеб", 49.99),
+                new Product("Сметана", 80, true),
+                new Product("Сыр", 180, false),
+                new Product("Курица", 250, false),
+                new Product("Кофе", 320, true),
+                new Product("Хлеб", 49.99, false),
 
         };
 
@@ -34,9 +34,9 @@ public class Main {
                 double sum = 0;
                 for (int i = 0; i < bin.length; i++) {
                     if (bin[i] != 0) {
-                        System.out.println(products[i].toString() + " " + bin[i] + " шт. " + dF.format(bin[i] * products[i].getPrice()) + " руб. в сумме");
+                        System.out.println(products[i].toString() + " " + bin[i] + " шт. " + dF.format(products[i].totalPrice(bin[i])) + " руб. в сумме");
                     }
-                    sum += bin[i] * products[i].getPrice();
+                    sum += products[i].totalPrice(bin[i]);
                 }
                 System.out.println("Итого: " + dF.format(sum) + " руб.");
                 break;
