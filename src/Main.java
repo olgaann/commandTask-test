@@ -3,7 +3,7 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) { //ЭТО ВЕТКА SALE
         Product[] products = {
                 new Product("Сметана", 80),
                 new Product("Сыр", 180),
