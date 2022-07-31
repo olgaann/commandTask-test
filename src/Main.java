@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -22,24 +21,36 @@ public class Main {
         int[] bin = new int[products.length]; //это массив корзины покупок для хранения кол-ва купленных товаров
         DecimalFormat dF = new DecimalFormat("0.00");
         int count = 0; //счетчик покупок
+        double sum = 0; //сумма покупок
         while (true) {
             System.out.println("Введите номер товара и количество через пробел. Для завершения введите `end`");
             String input = scan.nextLine();
 
+
             if (input.equals("end") && count == 0) {
                 System.out.println("Ваша корзина пуста.");
                 break;
-            } else if (input.equals("end") && count != 0) {
-                System.out.println("Ваша корзина: ");
-                double sum = 0;
+            } else if (input.equals("end")) { //если была хотя бы одна итерация
+
                 for (int i = 0; i < bin.length; i++) {
-                    if (bin[i] != 0) {
-                        System.out.println(products[i].toString() + " " + bin[i] + " шт. " + dF.format(bin[i] * products[i].getPrice()) + " руб. в сумме");
-                    }
-                    sum += bin[i] * products[i].getPrice();
+                    sum += bin[i] * products[i].getPrice(); // вычисляем сумму покупок
                 }
-                System.out.println("Итого: " + dF.format(sum) + " руб.");
-                break;
+
+                if (sum == 0) {
+                    System.out.println("Ваша корзина пуста!");
+                    break;
+                } else {
+                    System.out.println("Ваша корзина: ");
+
+                    for (int i = 0; i < bin.length; i++) {
+                        if (bin[i] != 0) {
+                            System.out.println(products[i].toString() + " " + bin[i] + " шт. " + dF.format(bin[i] * products[i].getPrice()) + " руб. в сумме");
+                        }
+
+                    }
+                    System.out.println("Итого: " + dF.format(sum) + " руб.");
+                    break;
+                }
             }
             String[] purchase = input.split(" "); //расщепляем ввод пользователя на номер продукта и количество продукта
 
@@ -59,17 +70,21 @@ public class Main {
                 continue;
             }
 
-            if (productNumber < 0 || productNumber >= products.length || qty <= 0) {
-                if (productNumber < 0 || productNumber >= products.length) {
-                    System.out.println("Такого номера товара не существует.");
-                }
-                if (qty <= 0) {
-                    System.out.println("Количество товара должно быть положительным.");
-                }
+            if (productNumber < 0 || productNumber >= products.length) {
+
+                System.out.println("Такого номера товара не существует.");
                 continue;
             }
 
-            bin[productNumber] += qty;
+            //ниже добавлена возможность вводить отрицательное или нулевое значение товара:
+            if(qty == 0) {
+                bin[productNumber] = qty;
+            } else if (qty < 0) {
+                bin[productNumber] = Math.max((bin[productNumber] + qty), 0);
+            } else {
+                bin[productNumber] += qty;
+            }
+
             count++;
 
         }
